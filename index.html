@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hari — корейская косметика в Узбекистане</title>
+<link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/logo/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
+<link rel="manifest" href="assets/site.webmanifest">
+<meta name="theme-color" content="#FFB3C7">
+<style>
+:root{
+  --accent:#ffb3c7; --accent-strong:#ff7aa2; --accent-soft:#fff0f4; --ink:#1f1a24; --ink2:#726a78;
+  --card:#f6f3f4; --chip:#f1eded; --bg:#fff; --line:#eee8ea; --radius:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html{scrollbar-gutter:stable}
+body{font-family:"SF Pro Display",-apple-system,system-ui,Roboto,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+body.overlay-open{overflow:hidden}
+button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--accent-strong);outline-offset:3px}
+a{color:inherit;text-decoration:none}
+button{font:inherit;border:0;background:none;cursor:pointer;color:inherit}
+.wrap{max-width:1440px;margin:0 auto;padding:0 20px}
+
+.topline{background:var(--ink);color:#fff;font-size:13px;text-align:center;padding:8px 16px}
+.topline b{color:var(--accent)}
+.appbar{display:none;align-items:center;gap:12px;background:var(--accent-soft);padding:10px 16px}
+.appbar .logo-sq{width:36px;height:36px;border-radius:9px;flex:none}
+.appbar p{font-size:13px;font-weight:700}.appbar small{font-size:11px;color:var(--ink2);display:block}
+.appbar span.soon{margin-left:auto;background:#fffc;border-radius:99px;padding:8px 16px;font-size:13px;font-weight:600;color:#000b}
+
+header{position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:1px solid var(--line)}
+.hrow{display:flex;align-items:center;gap:16px;height:64px}
+.logo{display:flex;align-items:center;gap:8px;font-weight:900;font-size:22px;letter-spacing:-.5px}
+.logo img{height:26px;width:auto;display:block}
+.logo sup{font-size:11px;font-weight:700;color:var(--accent-strong)}
+.seg{display:flex;gap:4px;background:var(--card);border-radius:99px;padding:4px}
+.seg button{padding:8px 14px;border-radius:99px;font-size:14px;font-weight:600;color:var(--ink2);white-space:nowrap}
+.seg button.on{background:var(--ink);color:#fff}
+.search{flex:1;display:flex;align-items:center;gap:8px;background:var(--card);border-radius:12px;padding:0 14px;height:44px}
+.search input{flex:1;border:0;background:none;outline:none;font:inherit;font-size:15px;min-width:0}
+.icons{display:flex;gap:6px}
+.icons button{position:relative;width:44px;height:44px;border-radius:12px;display:grid;place-items:center}
+.icons button:hover{background:var(--card)}
+.badge{position:absolute;top:4px;right:4px;min-width:18px;height:18px;border-radius:9px;background:var(--accent-strong);color:#fff;font-size:11px;font-weight:800;display:grid;place-items:center;padding:0 4px}
+.badge:empty{display:none}
+
+.slider{position:relative;border-radius:28px;overflow:hidden;margin-top:20px;height:460px;background:#fbeef0;touch-action:pan-y}
+.slide{position:absolute;inset:0;display:flex;align-items:center;background:var(--tone,#fbeef0);opacity:0;visibility:hidden;transition:opacity .9s ease,visibility 0s linear .9s}
+.slide.on{opacity:1;visibility:visible;z-index:1;transition:opacity .9s ease}
+.slide .pic{position:absolute;top:0;right:0;bottom:0;width:64%;background-size:cover;background-position:var(--pos,center);
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 30%);mask-image:linear-gradient(90deg,transparent 0,#000 30%);
+  transform:scale(1.1);transition:transform 7.5s cubic-bezier(.2,.6,.3,1)}
+.slide.on .pic{transform:scale(1)}
+.slide .in{position:relative;padding:48px 48px 64px;max-width:600px}
+.slide .in>*{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.slide.on .in>*{opacity:1;transform:none}
+.slide.on .in>:nth-child(1){transition-delay:.25s}.slide.on .in>:nth-child(2){transition-delay:.38s}
+.slide.on .in>:nth-child(3){transition-delay:.5s}.slide.on .in>:nth-child(4){transition-delay:.62s}
+.slide .tag{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--accent-strong)}
+.slide h1,.slide h2{font-size:48px;line-height:1.02;letter-spacing:-1px;margin:10px 0 14px}
+.slide p{font-size:17px;color:var(--ink2);max-width:430px}
+.slide .btns{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap}
+.slide .btns button{height:50px;padding:0 24px;border-radius:99px;font-weight:700;font-size:15px;transition:transform .15s}
+.slide .btns button:hover{transform:translateY(-1px)}
+.slide .b1{background:var(--ink);color:#fff}.slide .b2{background:#fff}
+.sl-dots{position:absolute;left:48px;bottom:22px;display:flex;gap:6px;z-index:3}
+.sl-dots button{width:40px;height:24px;padding:0;display:flex;align-items:center}
+.sl-dots span{display:block;width:100%;height:4px;border-radius:2px;background:#1f1a2420;overflow:hidden}
+.sl-dots i{display:block;height:100%;width:0;background:var(--ink);border-radius:2px}
+.sl-dots button.on i{animation:slprog var(--dur,6s) linear forwards}
+.sl-dots button.done i{width:100%}
+.slider.paused .sl-dots button.on i{animation-play-state:paused}
+@keyframes slprog{to{width:100%}}
+.sl-arrows{position:absolute;right:20px;bottom:18px;display:flex;gap:8px;z-index:3}
+.sl-arrows button{width:44px;height:44px;border-radius:50%;background:#ffffffcc;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);display:grid;place-items:center;transition:background .15s,transform .15s}
+.sl-arrows button:hover{background:#fff;transform:scale(1.05)}
+@media (prefers-reduced-motion:reduce){
+  .slide,.slide.on,.slide .pic,.slide .in>*{transition:none!important}
+  .slide .pic{transform:none}.slide .in>*{opacity:1;transform:none}
+  .sl-dots button.on i{animation:none;width:100%}
+}
+.photo-bg{background-size:cover;background-position:center;background-repeat:no-repeat}
+.promo.seoul{background-image:url(images/hero-seoul-box.jpg);background-position:left center;align-items:flex-end;text-align:right}
+.promo.seoul::before{content:"";position:absolute;inset:0;background:linear-gradient(270deg,#fbf6f1 0%,#fbf6f1e0 38%,#fbf6f100 70%)}
+.promo.seoul>*{max-width:360px}
+.promo.seoul .cta{align-self:flex-end}
+.promos{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin:12px 0 20px}
+.promo{border-radius:24px;padding:28px;min-height:220px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden}
+.promo.a{background:linear-gradient(120deg,#ffe3ea,#ffd0dc 60%,#ffc2d3)}
+.promo.a .art{position:absolute;right:24px;bottom:0;height:90%;display:flex;align-items:flex-end;gap:6px}
+.promo.a .art svg{height:100%;width:auto}
+.promo.b{background:var(--ink);color:#fff}
+.promo .tag{font-size:12px;font-weight:700;letter-spacing:.06em;opacity:.7;margin-bottom:6px;position:relative;z-index:1}
+.promo h2{font-size:32px;line-height:1.05;letter-spacing:-.5px;position:relative;z-index:1;max-width:520px}
+.promo p{margin-top:8px;opacity:.8;position:relative;z-index:1;max-width:420px}
+.promo .cta{margin-top:16px;align-self:flex-start;background:var(--ink);color:#fff;font-weight:700;padding:10px 18px;border-radius:99px;position:relative;z-index:1}
+.promo.b .cta{background:var(--accent);color:var(--ink)}
+
+.perks{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:8px}
+.perk{background:var(--card);border-radius:14px;padding:14px;font-size:13px;display:flex;gap:10px;align-items:center}
+.perk span{font-size:22px}.perk b{display:block;font-size:14px}
+
+section{margin:36px 0}
+.showing-results #main>.slider,.showing-results #main>.promos,.showing-results #main>.perks{display:none}
+.sh{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px}
+.sh h3{font-size:26px;letter-spacing:-.4px}
+.sh a,.sh button{font-size:14px;font-weight:600;color:var(--ink2)}
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;padding:10px 16px;border-radius:99px;background:var(--chip);font-size:14px;font-weight:600;white-space:nowrap}
+.chip.on{background:var(--ink);color:#fff}
+
+.cats{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.cat{background:var(--card);border-radius:var(--radius);aspect-ratio:1/1;padding:14px;display:flex;flex-direction:column;justify-content:space-between;font-weight:700;font-size:15px;line-height:1.15;transition:transform .15s}
+.cat:hover{transform:translateY(-2px)}
+.cat .ico{align-self:flex-end;height:58%;display:flex}
+.cat .ico svg{height:100%;width:auto}
+.cat{position:relative;overflow:hidden}
+.cat .ico{position:absolute;right:0;bottom:0;width:72%;height:72%}
+.cat .ico img{width:100%;height:100%;object-fit:cover;border-radius:14px 0 0 0;mix-blend-mode:multiply}
+
+.row{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 5*12px)/6);gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.row::-webkit-scrollbar{display:none}
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.sub{font-size:18px;margin:22px 0 10px;display:flex;justify-content:space-between;align-items:baseline}
+.sub span{font-size:14px;color:var(--ink2);font-weight:600;cursor:pointer}
+
+.pc{scroll-snap-align:start;cursor:pointer;min-width:0}
+.pc .img{position:relative;background:var(--card);border-radius:var(--radius);aspect-ratio:1/1;display:grid;place-items:center;overflow:hidden}
+.pc .img svg{height:70%;width:auto;transition:transform .25s}
+.pc:hover .img svg{transform:scale(1.06) rotate(-3deg)}
+.pc .fav{position:absolute;top:8px;right:8px;width:32px;height:32px;border-radius:50%;background:#fff;display:grid;place-items:center;opacity:.9}
+.pc .fav.on svg{fill:var(--accent-strong);stroke:var(--accent-strong)}
+.pc .tags{position:absolute;left:8px;top:8px;display:flex;flex-direction:column;gap:4px;align-items:flex-start}
+.pc .tags span{background:#fff;border-radius:8px;font-size:11px;font-weight:700;padding:4px 8px}
+.pc .tags .hot{background:var(--accent-strong);color:#fff}
+.pc .brand{margin-top:10px;font-size:12px;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.04em}
+.pc .price{margin-top:8px;font-weight:800;font-size:17px;display:flex;align-items:baseline;gap:5px 8px;flex-wrap:wrap}
+.pc .price s{font-weight:500;font-size:13px;color:var(--ink2)}
+.pc .price .discount{font-size:11px;padding:3px 5px}
+.pc .split{display:inline-flex;align-items:center;gap:6px;margin-top:4px;font-size:12px;color:var(--ink2)}
+.pc .split b{background:var(--accent-soft);color:var(--ink);padding:2px 6px;border-radius:6px;font-size:11px}
+.pc .name{margin-top:6px;font-size:14px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-align:left;min-height:2.8em;width:100%}
+.pc .meta{margin-top:8px;font-size:12px;color:var(--ink2);display:flex;gap:5px 10px;flex-wrap:wrap}
+
+.cols{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:12px}
+.col{border-radius:20px;padding:20px;min-height:220px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.col h4{font-size:20px;line-height:1.15;max-width:85%}
+.col p{font-size:13px;opacity:.75;margin-top:6px}
+.col .go{background:#fff;color:var(--ink);padding:8px 14px;border-radius:99px;font-weight:700;font-size:13px;align-self:flex-start;cursor:pointer}
+.col.ph{min-height:340px;color:#fff;justify-content:flex-end;gap:12px;cursor:pointer}
+.col.ph::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#0000 35%,#000a 100%);transition:.2s}
+.col.ph:hover::before{background:linear-gradient(180deg,#0000 25%,#000c 100%)}
+.col.ph>*{position:relative}
+.col.ph p{opacity:.9}
+
+.newin{position:relative;border-radius:24px;overflow:hidden;min-height:260px;display:flex;align-items:center;background:#f7e9e8 url(images/bg-pedestals.jpg) center/cover}
+.newin::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#fdf3f2 0%,#fdf3f2d9 34%,#fdf3f200 60%)}
+.newin .in{position:relative;padding:36px;max-width:440px}
+.newin h3{font-size:30px;line-height:1.05;letter-spacing:-.5px;margin:6px 0 10px}
+.newin p{color:var(--ink2)}
+.newin button{margin-top:18px;height:46px;padding:0 22px;border-radius:99px;background:var(--ink);color:#fff;font-weight:700}
+
+.rt.ph{padding:0;overflow:hidden;background:var(--card)}
+.rt.ph .pimg{aspect-ratio:4/3;background-size:cover;background-position:center 25%}
+.rt.ph .body{padding:0 16px 16px;display:flex;flex-direction:column;gap:12px;flex:1}
+.ugc{aspect-ratio:4/5;border-radius:14px;background-size:cover;background-position:center;margin:-4px -4px 12px;position:relative}
+.ugc small{position:absolute;right:8px;bottom:8px;background:#0008;color:#fff;font-size:10px;padding:3px 7px;border-radius:6px}
+
+.routines{display:grid;grid-auto-flow:column;grid-auto-columns:260px;gap:12px;overflow-x:auto;scrollbar-width:none}
+.rt{border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:12px;cursor:pointer;min-height:280px}
+.rt.lead{background:var(--ink);color:#fff;justify-content:space-between}
+.rt.lead h4{font-size:26px;line-height:1.05}
+.rt.lead .go{background:var(--accent);color:var(--ink);padding:8px 14px;border-radius:99px;font-weight:700;font-size:13px;align-self:flex-start}
+.rt b{font-size:16px;line-height:1.2}.rt small{font-size:12px;opacity:.7}
+.rt ol{list-style:none;display:flex;flex-direction:column;gap:6px;margin-top:auto}
+.rt li{background:#fffb;border-radius:10px;padding:7px 10px;font-size:12px;display:flex;gap:8px}
+.rt li i{font-style:normal;font-weight:800;color:var(--accent-strong)}
+
+.tests{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.test{background:var(--card);border-radius:18px;padding:18px;font-size:14px;line-height:1.5}
+.test .st{color:var(--accent-strong);letter-spacing:2px}
+.test b{display:block;margin-top:10px;font-size:13px}
+
+footer{background:var(--ink);color:#fffc;margin-top:60px;padding:48px 0 32px}
+footer .fg{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:24px}
+footer h5{color:#fff;font-size:15px;margin-bottom:12px}
+footer li{list-style:none;font-size:14px;margin:8px 0;opacity:.75}
+footer .copy{margin-top:40px;font-size:12px;opacity:.5}
+.pay{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.pay span{border:1px solid #fff3;border-radius:8px;padding:4px 10px;font-size:12px;font-weight:700}
+
+.ov{position:fixed;inset:0;background:#0006;z-index:50;opacity:0;pointer-events:none;transition:.2s}
+.ov.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,100%);background:#fff;z-index:60;transform:translateX(100%);transition:.25s;display:flex;flex-direction:column}
+.drawer.on{transform:none}
+.dh{display:flex;justify-content:space-between;align-items:center;padding:20px;border-bottom:1px solid var(--line)}
+.dh h3{font-size:22px}
+.db{flex:1;overflow:auto;padding:16px 20px}
+.ship{background:var(--accent-soft);border-radius:12px;padding:12px;font-size:13px;margin-bottom:8px}
+.bar{height:6px;background:#fff;border-radius:3px;margin-top:8px;overflow:hidden}.bar i{display:block;height:100%;background:var(--accent-strong)}
+.ci{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line)}
+.ci .th{background:var(--card);border-radius:12px;aspect-ratio:1;display:grid;place-items:center}
+.ci .th svg{height:78%;width:auto}
+.ci .n{font-size:14px;font-weight:600;line-height:1.4;overflow-wrap:anywhere}.ci .s{font-size:12px;color:var(--ink2);margin-top:6px;line-height:1.5}
+.qty{display:flex;align-items:center;gap:8px;margin-top:6px}
+.qty button{width:32px;height:32px;border-radius:8px;background:var(--card);font-weight:700}
+.df{padding:20px;border-top:1px solid var(--line)}
+.df .t{display:flex;justify-content:space-between;font-size:18px;font-weight:800}
+.df .sp{font-size:13px;color:var(--ink2);margin:4px 0 14px}
+.btn{width:100%;height:52px;border-radius:14px;background:var(--accent);font-weight:800;font-size:16px}
+.btn.dark{background:var(--ink);color:#fff}
+.empty{text-align:center;color:var(--ink2);padding:60px 0}
+
+.modal{position:fixed;inset:24px 0;margin:auto;width:min(1080px,calc(100% - 48px));height:fit-content;max-height:calc(100dvh - 48px);overflow:auto;overscroll-behavior:contain;background:#fff;border-radius:24px;z-index:60;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(12px);transition:opacity .18s,transform .18s;box-shadow:0 24px 90px #1f1a2430;scrollbar-gutter:stable}
+.modal.on{opacity:1;visibility:visible;pointer-events:auto;transform:none}
+@media (prefers-reduced-motion:reduce){.modal{transition:none}}
+@media (max-height:650px) and (min-width:761px){.product-layout .product-gallery{position:static}}
+.product-topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:12px 24px;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:3;background:#fffffff5;backdrop-filter:blur(14px)}
+.product-breadcrumb{display:flex;gap:10px;align-items:center;min-width:0;font-size:13px;color:var(--ink2)}
+.product-breadcrumb span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
+.modal .x{width:40px;height:40px;flex:none;border-radius:50%;background:var(--card);display:grid;place-items:center}
+.product-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:36px;padding:28px}
+.product-gallery{min-width:0;align-self:start;position:sticky;top:92px}
+.gallery-stage{position:relative;width:100%;height:clamp(260px,calc(100dvh - 300px),460px);display:grid;place-items:center;background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.gallery-stage>img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.gallery-stage>svg.pack{width:72%;height:72%}
+.photo-fallback{position:absolute;inset:0;display:grid;place-content:center;text-align:center;gap:8px;background:var(--card);color:var(--ink2);font-size:14px;padding:24px}
+.photo-fallback b{color:var(--ink)}
+.gallery-footer{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:12px 0;color:var(--ink2);font-size:12px}
+.gallery-nav{display:flex;align-items:center;gap:10px}
+.gallery-nav button{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:#fff}
+.gallery-count{min-width:34px;text-align:center;font-variant-numeric:tabular-nums}
+.gal{display:flex;gap:10px;overflow-x:auto;padding:3px 3px 8px;scrollbar-width:thin;scroll-snap-type:x proximity}
+.gal button{width:64px;height:64px;flex:0 0 64px;border-radius:12px;background:#fff;border:1px solid var(--line);overflow:hidden;scroll-snap-align:start;transition:border-color .15s,box-shadow .15s}
+.gal button img{width:100%;height:100%;object-fit:contain;display:block}
+.gal button.on{border:2px solid var(--ink);box-shadow:0 0 0 2px #fff,0 0 0 3px var(--line)}
+.gallery-note{font-size:12px;line-height:1.5;color:var(--ink2);margin-top:8px}
+.modal .mc{min-width:0;display:flex;flex-direction:column;gap:22px}
+.product-heading{display:flex;flex-direction:column;gap:10px}
+.modal .br{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink2)}
+.modal h2{font-size:28px;line-height:1.18;letter-spacing:-.65px;overflow-wrap:anywhere}
+.modal .desc{font-size:14px;line-height:1.6;color:var(--ink2)}
+.price-panel{border-radius:16px;background:var(--card);padding:18px 20px}
+.price-line{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px}
+.modal .pr{font-size:30px;font-weight:850;letter-spacing:-.75px;line-height:1.2}
+.old-price{font-size:16px;font-weight:500;color:var(--ink2);white-space:nowrap}
+.discount{display:inline-flex;border-radius:6px;background:var(--accent);color:var(--ink);padding:4px 7px;font-size:12px;font-weight:800;white-space:nowrap}
+.price-saving{font-size:12px;color:var(--ink2);margin-top:8px}
+.installment{font-size:13px;line-height:1.5;padding-top:12px;margin-top:12px;border-top:1px solid var(--line);color:var(--ink2)}
+.installment b{color:var(--ink);font-weight:700}
+.option-label{font-size:14px;font-weight:700;display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.option-label span{color:var(--ink2);font-weight:500}
+.skin{display:flex;gap:6px;flex-wrap:wrap}
+.skin span{background:var(--accent-soft);border-radius:99px;padding:5px 10px;font-size:12px;font-weight:600}
+.vols{display:flex;gap:8px;flex-wrap:wrap}
+.vols button{min-width:88px;min-height:54px;max-width:100%;border:1px solid var(--line);border-radius:12px;background:#fff;font-weight:600;font-size:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;line-height:1.25;padding:10px 14px;text-align:center}
+.vols button small{font-size:12px;color:var(--ink2);font-weight:400}
+.vols button.on{border-color:var(--ink);background:var(--ink);color:#fff}.vols button.on small{color:#ffffffbd}
+.purchase-actions{display:flex;gap:10px}
+.purchase-actions .btn{flex:1}
+.favourite-action{height:52px;width:52px;flex:none;display:grid;place-items:center;border:1px solid var(--line);border-radius:14px}
+.favourite-action.on{background:var(--accent-soft);border-color:var(--accent)}
+.favourite-action.on svg{fill:var(--accent-strong);stroke:var(--accent-strong)}
+.delivery-summary{display:flex;align-items:flex-start;gap:12px;border:1px solid var(--line);border-radius:14px;padding:14px;font-size:13px;line-height:1.55;color:var(--ink2)}
+.delivery-summary svg{flex:none;margin-top:2px;color:var(--ink)}
+.delivery-summary b{display:block;font-size:14px;color:var(--ink);margin-bottom:3px}
+.product-details{border-top:1px solid var(--line)}
+.product-details details{border-bottom:1px solid var(--line)}
+.product-details summary{cursor:pointer;font-size:14px;font-weight:650;padding:17px 0;display:flex;align-items:center;justify-content:space-between;gap:16px;list-style:none}
+.product-details summary::-webkit-details-marker{display:none}
+.product-details summary::after{content:'+';font-size:20px;font-weight:400;color:var(--ink2)}
+.product-details details[open]>summary::after{content:'−'}
+.detail-content{font-size:14px;color:var(--ink2);line-height:1.65;padding:0 0 18px}
+.detail-content p+p{margin-top:10px}
+.detail-content dl{display:grid;grid-template-columns:minmax(90px,1fr) minmax(0,1.4fr);gap:10px 16px;font-size:13px}
+.detail-content dd{color:var(--ink);overflow-wrap:anywhere}
+.detail-content .skin{margin-top:12px}
+.detail-content a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.pc .img svg.pack{height:92%;width:auto}
+.ci .th svg.pack{height:96%}
+.pc:hover .img svg.pack{transform:scale(1.04)}
+img.real{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#fff}
+.has-photo>svg.pack{visibility:hidden}
+.ci .th{position:relative;overflow:hidden}
+.toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;font-size:14px;font-weight:600;z-index:80;opacity:0;transition:.2s;max-width:calc(100% - 32px)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:1100px){.row{grid-auto-columns:calc((100% - 3*12px)/4)}.grid{grid-template-columns:repeat(4,1fr)}.cols{grid-template-columns:1fr 1fr}.perks{grid-template-columns:1fr 1fr}.tests{grid-template-columns:1fr}}
+@media (max-width:760px){
+  .appbar{display:flex}
+  .hrow{flex-wrap:wrap;height:auto;padding:10px 16px;gap:10px}
+  .search{order:3;flex-basis:100%}
+  .seg{order:4;flex-basis:100%;overflow-x:auto;scrollbar-width:none}
+  .icons{margin-left:auto}
+  .promos{grid-template-columns:1fr}
+  .promo h2{font-size:26px}
+  .slider{height:600px}
+  .slide{align-items:flex-end}
+  .slide .pic{width:100%;bottom:auto;height:64%;-webkit-mask-image:linear-gradient(180deg,#000 62%,transparent);mask-image:linear-gradient(180deg,#000 62%,transparent)}
+  .slide .in{padding:24px 22px 58px}
+  .slide h1,.slide h2{font-size:30px}
+  .slide p{font-size:15px}
+  .sl-dots{left:22px;bottom:18px}
+  .sl-arrows{display:none}
+  .promo.seoul{min-height:300px;justify-content:flex-end}
+  .promo.seoul::before{background:linear-gradient(0deg,#fbf6f1 0%,#fbf6f1e6 45%,#fbf6f100 75%)}
+  .newin{align-items:flex-end;min-height:360px;background-position:70% center}
+  .newin::before{background:linear-gradient(0deg,#fdf3f2 0%,#fdf3f2e6 45%,#fdf3f200 75%)}
+  .newin .in{padding:24px}
+  .col.ph{min-height:300px}
+  .cats{grid-template-columns:repeat(3,1fr)}
+  .row{grid-auto-columns:44%}.grid{grid-template-columns:repeat(2,1fr)}
+  .cols{grid-template-columns:1fr}
+  .modal{inset:8px 0;width:calc(100% - 16px);max-height:calc(100dvh - 16px);border-radius:20px}
+  .product-topbar{padding:8px 16px}
+  .product-layout{grid-template-columns:minmax(0,1fr);padding:16px;gap:24px}
+  .product-gallery{position:static}
+  .gallery-stage{height:auto;max-height:360px;aspect-ratio:1.08}
+  .gal{gap:8px}.gal button{width:58px;height:58px;flex-basis:58px}
+  .modal h2{font-size:25px}.modal .pr{font-size:28px}
+  .modal .mc{gap:20px}.price-panel{padding:16px}
+  .ci{grid-template-columns:56px minmax(0,1fr);gap:10px}.ci>.line-total{grid-column:2;margin-top:-2px}
+  footer .fg{grid-template-columns:1fr 1fr}
+  .sh h3{font-size:22px}
+}
+</style>
+</head>
+<body>
+
+<div class="topline">Бесплатная доставка по Ташкенту от <b>500 000 сум</b> · Оригинал напрямую из Кореи 🇰🇷</div>
+<div class="appbar">
+  <img class="logo-sq" src="assets/logo/apple-touch-icon.png" alt="">
+  <div><p>Установите приложение iOS</p><small>Там быстрее, удобнее и больше возможностей</small></div>
+  <span class="soon">Скоро</span>
+</div>
+
+<header>
+  <div class="wrap hrow">
+    <a href="#" class="logo" aria-label="Hari — на главную"><img src="assets/logo/wordmark.svg" alt="hari"><sup>하리 · K-beauty</sup></a>
+    <div class="seg" id="skinSeg">
+      <button class="on" data-skin="all">Все типы кожи</button>
+      <button data-skin="dry">Сухая</button>
+      <button data-skin="oily">Жирная</button>
+      <button data-skin="combo">Комби</button>
+      <button data-skin="sens">Чувствительная</button>
+    </div>
+    <label class="search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" placeholder="Сыворотка, SPF, COSRX, ниацинамид…">
+    </label>
+    <div class="icons">
+      <button id="favBtn" aria-label="Избранное"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg><span class="badge" id="favCount"></span></button>
+      <button id="cartBtn" aria-label="Корзина"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 7h14l-1.2 12.1a2 2 0 0 1-2 1.9H8.2a2 2 0 0 1-2-1.9L5 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg><span class="badge" id="cartCount"></span></button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+  <div class="slider" id="slider" role="region" aria-roledescription="carousel" aria-label="Главные предложения">
+    <div class="slide on" style="--tone:#fbeef0;--pos:62% center" aria-roledescription="slide" aria-label="1 из 5">
+      <div class="pic" style="background-image:url(images/hero-main.jpg)"></div>
+      <div class="in">
+        <div class="tag">ОРИГИНАЛ ИЗ КОРЕИ 🇰🇷</div>
+        <h1>Кожа, которая светится изнутри</h1>
+        <p>Корейский уход от COSRX, Anua, Beauty of Joseon и ещё 20 брендов — с доставкой по всему Узбекистану</p>
+        <div class="btns"><button class="b1" data-group="0">Смотреть уход</button><button class="b2" onclick="toast('Скоро: тест на тип кожи')">Подобрать по типу кожи</button></div>
+      </div>
+    </div>
+    <div class="slide" style="--tone:#eef2f7;--pos:center 30%" aria-roledescription="slide" aria-label="2 из 5" aria-hidden="true">
+      <div class="pic" style="background-image:url(images/collection-glass-skin.jpg)"></div>
+      <div class="in">
+        <div class="tag">ПОДБОРКА</div>
+        <h2>Стеклянная кожа: увлажнение слоями</h2>
+        <p>Тонеры, эссенции и кремы, которые дают тот самый корейский glow</p>
+        <div class="btns"><button class="b1" data-coll="1">Смотреть подборку</button></div>
+      </div>
+    </div>
+    <div class="slide" style="--tone:#fdf3e6;--pos:center 22%" aria-roledescription="slide" aria-label="3 из 5" aria-hidden="true">
+      <div class="pic" style="background-image:url(images/collection-spf.jpg)"></div>
+      <div class="in">
+        <div class="tag">СОЛНЦЕЗАЩИТА</div>
+        <h2>SPF на каждый день ташкентского лета</h2>
+        <p>Лёгкие корейские санскрины без белых следов — UV-индекс здесь доходит до 11</p>
+        <div class="btns"><button class="b1" data-cat="spf">Выбрать SPF</button></div>
+      </div>
+    </div>
+    <div class="slide" style="--tone:#fbeef3;--pos:center 30%" aria-roledescription="slide" aria-label="4 из 5" aria-hidden="true">
+      <div class="pic" style="background-image:url(images/collection-bestsellers.jpg)"></div>
+      <div class="in">
+        <div class="tag">ХИТЫ ИЗ СЕУЛА</div>
+        <h2>То, что покупают в Olive Young прямо сейчас</h2>
+        <p>Самые популярные продукты месяца — уже в наличии в Ташкенте</p>
+        <div class="btns"><button class="b1" data-coll="0">Смотреть хиты</button><button class="b2" data-stock="1">В наличии</button></div>
+      </div>
+    </div>
+    <div class="slide" style="--tone:#edf1f5;--pos:center 28%" aria-roledescription="slide" aria-label="5 из 5" aria-hidden="true">
+      <div class="pic" style="background-image:url(images/routine-men.jpg)"></div>
+      <div class="in">
+        <div class="tag">ДЛЯ МУЖЧИН</div>
+        <h2>Уход за 3 шага — без лишнего</h2>
+        <p>Очищение, тонер и SPF: простая корейская рутина, которая реально работает</p>
+        <div class="btns"><button class="b1" data-addroutine="3">Всё в корзину</button><button class="b2" data-routine="3">Подробнее</button></div>
+      </div>
+    </div>
+    <div class="sl-dots" role="tablist" aria-label="Выбор слайда"></div>
+    <div class="sl-arrows">
+      <button data-sl="-1" aria-label="Предыдущий слайд"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <button data-sl="1" aria-label="Следующий слайд"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button>
+    </div>
+  </div>
+
+  <div class="promos">
+    <div class="promo seoul photo-bg">
+      <div class="tag">ПРИВЕЗЁМ ИЗ СЕУЛА</div>
+      <h2>Любой продукт из Olive Young по ссылке</h2>
+      <p>Скиньте ссылку или скрин — посчитаем цену с доставкой за 10 минут</p>
+      <button class="cta" onclick="toast('Отправьте ссылку менеджеру в Telegram — мы всё посчитаем')">Заказать</button>
+    </div>
+    <div class="promo b">
+      <div class="tag">НЕ ЗНАЕТЕ, С ЧЕГО НАЧАТЬ?</div>
+      <h2>Подберём уход под вашу кожу</h2>
+      <p>Бесплатная консультация косметолога</p>
+      <button class="cta" onclick="toast('Скоро: тест на тип кожи')">Пройти тест</button>
+    </div>
+  </div>
+
+  <div class="perks">
+    <div class="perk"><span>🇰🇷</span><div><b>100% оригинал</b>Закупаем в Корее</div></div>
+    <div class="perk"><span>✈️</span><div><b>7–14 дней</b>Доставка из Сеула</div></div>
+    <div class="perk"><span>📅</span><div><b>Свежие сроки</b>Годен минимум 12 мес.</div></div>
+    <div class="perk"><span>💳</span><div><b>Сплит × 2</b>Оплата частями</div></div>
+  </div>
+
+  <section id="search-results" hidden>
+    <div class="sh"><h3 id="sr-title">Результаты</h3><button onclick="clearSearch()">Сбросить</button></div>
+    <div class="grid" id="sr-grid"></div>
+  </section>
+
+  <div id="home">
+    <section>
+      <div class="sh"><h3>Бренды</h3></div>
+      <div class="chips" id="brands"></div>
+      <div id="brand-grid-wrap" hidden><div class="grid" id="brand-grid" style="margin-top:16px"></div></div>
+    </section>
+    <div id="sections"></div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fg">
+      <div><img src="assets/logo/dark.svg" alt="hari" style="height:34px;width:auto;display:block"><p style="margin-top:12px;font-size:14px;opacity:.7;max-width:320px">Оригинальная корейская косметика с доставкой по всему Узбекистану.</p>
+        <div class="pay"><span>Click</span><span>Payme</span><span>Uzum Nasiya</span><span>Наличные</span></div></div>
+      <div><h5>Покупателям</h5><ul><li>Доставка и оплата</li><li>Оплата в сплит</li><li>Возврат</li><li>Как проверить оригинал</li></ul></div>
+      <div><h5>Hari</h5><ul><li>О нас</li><li>Заказ из Кореи</li><li>Консультация косметолога</li><li>Оптовым клиентам</li></ul></div>
+      <div><h5>Мы на связи</h5><ul><li>Telegram</li><li>Instagram</li><li>+998 00 000 00 00</li><li>Ташкент, ежедневно 10:00–21:00</li></ul></div>
+    </div>
+    <div class="copy">© 2026 Hari. Демо-проект.</div>
+  </div>
+</footer>
+
+<div class="ov" id="ov"></div>
+<aside class="drawer" id="cart" role="dialog" aria-modal="true" aria-labelledby="cartTitle" inert>
+  <div class="dh"><h3 id="cartTitle">Корзина</h3><button onclick="closeAll()" aria-label="Закрыть корзину" style="font-size:22px">✕</button></div>
+  <div class="db" id="cartItems"></div>
+  <div class="df" id="cartFoot"></div>
+</aside>
+<div class="modal" id="pm" role="dialog" aria-modal="true" aria-labelledby="productTitle" inert></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="data/catalogue.js"></script>
+<script>
+/* ---------- placeholder artwork: c = [body, cap/accent, label] ---------- */
+const ART = {
+  dropper:c=>`<svg viewBox="0 0 80 160"><rect x="32" y="4" width="16" height="30" rx="8" fill="${c[1]}"/><rect x="26" y="32" width="28" height="16" rx="3" fill="${c[1]}"/><rect x="12" y="46" width="56" height="108" rx="14" fill="${c[0]}"/><rect x="20" y="78" width="40" height="44" rx="6" fill="${c[2]}"/><rect x="26" y="88" width="28" height="4" rx="2" fill="${c[1]}" opacity=".6"/><rect x="26" y="98" width="18" height="3" rx="1.5" fill="${c[1]}" opacity=".4"/></svg>`,
+  toner:c=>`<svg viewBox="0 0 80 170"><rect x="24" y="4" width="32" height="26" rx="5" fill="${c[1]}"/><rect x="10" y="28" width="60" height="138" rx="12" fill="${c[0]}"/><rect x="18" y="70" width="44" height="60" rx="6" fill="${c[2]}"/><rect x="24" y="82" width="32" height="4" rx="2" fill="${c[1]}" opacity=".6"/><rect x="24" y="92" width="22" height="3" rx="1.5" fill="${c[1]}" opacity=".4"/></svg>`,
+  tube:c=>`<svg viewBox="0 0 70 170"><path d="M10 8h50l-4 120H14z" fill="${c[0]}"/><rect x="18" y="126" width="34" height="38" rx="6" fill="${c[1]}"/><rect x="18" y="40" width="34" height="50" rx="5" fill="${c[2]}"/><rect x="23" y="52" width="24" height="4" rx="2" fill="${c[1]}" opacity=".6"/><path d="M10 8h50v6H10z" fill="${c[1]}" opacity=".5"/></svg>`,
+  jar:c=>`<svg viewBox="0 0 140 110"><rect x="18" y="8" width="104" height="32" rx="10" fill="${c[1]}"/><rect x="10" y="36" width="120" height="68" rx="18" fill="${c[0]}"/><rect x="34" y="54" width="72" height="30" rx="6" fill="${c[2]}"/><rect x="44" y="64" width="52" height="4" rx="2" fill="${c[1]}" opacity=".6"/></svg>`,
+  pump:c=>`<svg viewBox="0 0 80 170"><path d="M34 4h30v8H44v14H34z" fill="${c[1]}"/><rect x="28" y="24" width="24" height="16" rx="3" fill="${c[1]}"/><rect x="12" y="38" width="56" height="128" rx="16" fill="${c[0]}"/><rect x="20" y="80" width="40" height="50" rx="6" fill="${c[2]}"/><rect x="26" y="92" width="28" height="4" rx="2" fill="${c[1]}" opacity=".6"/></svg>`,
+  mask:c=>`<svg viewBox="0 0 120 160"><path d="M8 10h104v140H8z" fill="${c[0]}" rx="8"/><path d="M8 10l6 6 6-6 6 6 6-6 6 6 6-6 6 6 6-6 6 6 6-6 6 6 6-6 6 6 6-6 6 6 6-6 6 6v-6" fill="${c[1]}"/><ellipse cx="60" cy="72" rx="30" ry="36" fill="${c[2]}"/><circle cx="48" cy="64" r="4" fill="${c[0]}"/><circle cx="72" cy="64" r="4" fill="${c[0]}"/><path d="M50 86q10 8 20 0" stroke="${c[0]}" stroke-width="3" fill="none" stroke-linecap="round"/><rect x="24" y="122" width="72" height="6" rx="3" fill="${c[1]}"/></svg>`,
+  cushion:c=>`<svg viewBox="0 0 140 110"><ellipse cx="70" cy="40" rx="60" ry="22" fill="${c[1]}"/><path d="M10 40v30c0 12 27 22 60 22s60-10 60-22V40" fill="${c[0]}"/><ellipse cx="70" cy="40" rx="48" ry="15" fill="${c[2]}"/><ellipse cx="70" cy="40" rx="20" ry="5" fill="${c[1]}" opacity=".4"/></svg>`,
+  tint:c=>`<svg viewBox="0 0 50 170"><rect x="12" y="4" width="26" height="62" rx="8" fill="${c[1]}"/><rect x="8" y="62" width="34" height="104" rx="10" fill="${c[0]}"/><rect x="14" y="80" width="22" height="70" rx="6" fill="${c[2]}" opacity=".85"/></svg>`,
+  stick:c=>`<svg viewBox="0 0 60 170"><rect x="18" y="4" width="24" height="34" rx="10" fill="${c[2]}"/><rect x="12" y="36" width="36" height="16" fill="${c[1]}"/><rect x="10" y="50" width="40" height="116" rx="8" fill="${c[0]}"/><rect x="16" y="90" width="28" height="4" rx="2" fill="${c[1]}" opacity=".6"/></svg>`,
+};
+/* ---------- product packshots: shaded bottle + printed label (original generic packaging, no brand logos) ---------- */
+let gid=0;
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+function shortName(p){
+  const w=p.name.replace(/["'()×:+]/g,' ').split(/\s+/).filter(x=>x&&!/^\d+$/.test(x));
+  let a='',b='';
+  for(const x of w){ if(!b&&(a+' '+x).trim().length<=13)a=(a+' '+x).trim(); else if((b+' '+x).trim().length<=13)b=(b+' '+x).trim(); else break; }
+  return [a,b];
+}
+const SHAPE={
+  // body: shapes that get the 3D shading; parts: drawn over; L: label box [x,y,w,h], vertical label if V
+  dropper:c=>({body:[`<rect x="62" y="66" width="76" height="120" rx="18"/>`],parts:`<rect x="88" y="14" width="24" height="40" rx="12" fill="${c[1]}"/><rect x="80" y="50" width="40" height="20" rx="3" fill="${c[1]}"/>`,L:[70,100,60,62]}),
+  toner:c=>({body:[`<rect x="58" y="42" width="84" height="144" rx="14"/>`],parts:`<rect x="74" y="12" width="52" height="34" rx="7" fill="${c[1]}"/>`,L:[66,84,68,74]}),
+  pump:c=>({body:[`<rect x="60" y="50" width="80" height="136" rx="22"/>`],parts:`<path d="M92 10h44v10h-30v18H92z" fill="${c[1]}"/><rect x="84" y="34" width="32" height="18" rx="3" fill="${c[1]}"/>`,L:[68,92,64,66]}),
+  tube:c=>({body:[`<path d="M64 14h72l-7 134H71z"/>`],parts:`<rect x="64" y="12" width="72" height="8" fill="${c[1]}" opacity=".55"/><rect x="74" y="146" width="52" height="40" rx="7" fill="${c[1]}"/>`,L:[74,44,52,76]}),
+  jar:c=>({body:[`<rect x="30" y="98" width="140" height="86" rx="24"/>`],parts:`<rect x="38" y="66" width="124" height="38" rx="12" fill="${c[1]}"/>`,L:[54,116,92,50]}),
+  mask:c=>({body:[`<rect x="44" y="18" width="112" height="168" rx="8"/>`],parts:`<path d="M44 18h112v8l-7-5-7 5-7-5-7 5-7-5-7 5-7-5-7 5-7-5-7 5-7-5-7 5-7-5-7 5-7-5-7 5z" fill="${c[1]}"/><ellipse cx="100" cy="72" rx="26" ry="31" fill="${c[2]}"/><circle cx="91" cy="66" r="3" fill="${c[1]}"/><circle cx="109" cy="66" r="3" fill="${c[1]}"/><path d="M92 82q8 6 16 0" stroke="${c[1]}" stroke-width="2.5" fill="none" stroke-linecap="round"/>`,L:[56,116,88,58]}),
+  cushion:c=>({body:[`<path d="M28 104v34c0 16 32 30 72 30s72-14 72-30v-34z"/>`,`<ellipse cx="100" cy="104" rx="72" ry="28"/>`],parts:`<ellipse cx="100" cy="104" rx="56" ry="19" fill="${c[2]}"/>`,L:[60,88,80,32]}),
+  tint:c=>({body:[`<rect x="80" y="80" width="40" height="106" rx="12"/>`],parts:`<rect x="84" y="12" width="32" height="72" rx="11" fill="${c[1]}"/>`,L:[84,90,32,90],V:1}),
+  device:c=>({body:[`<rect x="84" y="76" width="32" height="110" rx="16"/>`,`<circle cx="100" cy="50" r="38"/>`],parts:`<circle cx="100" cy="50" r="26" fill="${c[2]}"/><circle cx="100" cy="50" r="8" fill="${c[1]}" opacity=".5"/>`,L:[88,100,24,74],V:1}),
+  stick:c=>({body:[`<rect x="78" y="62" width="44" height="124" rx="10"/>`],parts:`<rect x="88" y="10" width="24" height="40" rx="10" fill="${c[2]}"/><rect x="82" y="46" width="36" height="18" fill="${c[1]}"/>`,L:[84,74,32,104],V:1}),
+};
+function pack(p){
+  const c=p.pal, s=SHAPE[p.art](c), id='g'+(gid++), [l1,l2]=shortName(p), vol=p.vols[0];
+  const [x,y,w,h]=s.L, cx=x+w/2, cy=y+h/2, ink='#1f1a24';
+  const shade=s.body.map(b=>b.replace('/>',` fill="${c[0]}"/>`)).join('')+s.body.map(b=>b.replace('/>',` fill="url(#${id})"/>`)).join('');
+  let label;
+  if(s.L[3]<40){ // cushion lid: one line
+    label=`<text x="${cx}" y="${cy+3}" text-anchor="middle" font-size="9" font-weight="800" letter-spacing="1" fill="${c[1]}">${esc(p.brand.toUpperCase())}</text>`;
+  } else if(s.V){ // slim tint/stick: text runs up the body
+    label=`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="5" fill="${c[2]}" opacity=".95"/>
+      <text transform="rotate(-90 ${cx} ${cy})" text-anchor="middle" font-family="-apple-system,system-ui,sans-serif">
+      <tspan x="${cx}" y="${cy-2}" font-size="7" font-weight="800" letter-spacing=".8" fill="${c[1]}">${esc(p.brand.toUpperCase())}</tspan>
+      <tspan x="${cx}" y="${cy+8}" font-size="6.5" fill="${ink}" opacity=".7">${esc(l1)}</tspan></text>`;
+  } else {
+    label=`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="5" fill="${c[2]}" opacity=".95"/>
+      <text text-anchor="middle" font-family="-apple-system,system-ui,sans-serif">
+      <tspan x="${cx}" y="${y+14}" font-size="7" font-weight="800" letter-spacing=".8" fill="${c[1]}">${esc(p.brand.toUpperCase())}</tspan>
+      <tspan x="${cx}" y="${cy+2}" font-size="8.5" font-weight="700" fill="${ink}">${esc(l1)}</tspan>
+      <tspan x="${cx}" y="${cy+12}" font-size="8.5" font-weight="700" fill="${ink}">${esc(l2)}</tspan>
+      <tspan x="${cx}" y="${y+h-6}" font-size="6.5" fill="${ink}" opacity=".6">${esc(vol)}</tspan></text>`;
+  }
+  return `<svg viewBox="0 0 200 200" class="pack"><defs><linearGradient id="${id}" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".10"/><stop offset=".28" stop-color="#fff" stop-opacity=".38"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".14"/></linearGradient></defs>
+    <ellipse cx="100" cy="190" rx="${p.art==='jar'||p.art==='cushion'?78:46}" ry="6" fill="#000" opacity=".08"/>${shade}${s.parts}${label}</svg>`;
+}
+const slug=p=>(p.brand+'-'+p.name).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+// Sourced photos use explicit paths so corrected product names do not break images.
+// HARI_PHOTOS (from scripts/build_catalogue.py) lists the photos that exist, so missing ones aren't requested.
+const PHOTOS=new Set(window.HARI_PHOTOS||[]);
+const brandImgs=p=>window.HARI_BRAND_IMAGES===false?[]:(p.images||[]);
+const photoOf=(p,label)=>((window.HARI_BRAND_IMAGES!==false&&p.variants?.find(v=>v.label===label)?.image)||brandImgs(p)[0])||(PHOTOS.has(slug(p))?`images/products/${slug(p)}.jpg`:null);
+const visual=(p,eager=false,label)=>`${pack(p)}${photoOf(p,label)?`<img class="real" src="${esc(photoOf(p,label))}" alt="${esc(p.brand+' '+p.name+(label?' · '+label:''))}" loading="${eager?'eager':'lazy'}" onload="this.parentNode.classList.add('has-photo')" onerror="this.parentNode.classList.remove('has-photo');this.remove()">`:''}`;
+
+const PAL = [
+  ['#fbe9ef','#e7809d','#ffffff'], // 0 pink
+  ['#e9f3ea','#5f9a6b','#ffffff'], // 1 green / cica
+  ['#f5ead8','#b88a4a','#ffffff'], // 2 rice / beige
+  ['#e6f0fb','#4a7fc0','#ffffff'], // 3 blue / hydra
+  ['#fff6d9','#e2a72d','#ffffff'], // 4 yellow / propolis
+  ['#efe8f8','#8a6cc2','#ffffff'], // 5 lavender
+  ['#ffffff','#2c2a30','#f1eded'], // 6 white/black
+  ['#2c2a30','#d6b98c','#433f48'], // 7 luxury dark
+  ['#ffd9d2','#e2574c','#fff2ef'], // 8 coral
+  ['#f3f3f3','#9aa0a6','#ffffff'], // 9 grey
+];
+
+/* ---------- data ----------
+  [name, brand, price (сум), oldPrice|0, art, palette, cat, skin types, volumes, inStock, hot, rating, reviews] */
+const DRY='dry',OILY='oily',COMBO='combo',SENS='sens',ALL=[DRY,OILY,COMBO,SENS];
+const P = [
+  ['Advanced Snail 96 Mucin Power Essence','COSRX',219000,259000,'toner',9,'serum',ALL,['100 мл'],1,1,4.9,812],
+  ['Low pH Good Morning Gel Cleanser','COSRX',129000,0,'tube',1,'cleanse',[OILY,COMBO,SENS],['150 мл'],1,0,4.8,431],
+  ['Relief Sun: Rice + Probiotics SPF50+','Beauty of Joseon',189000,0,'tube',2,'spf',ALL,['50 мл'],1,1,4.9,1204],
+  ['Glow Serum: Propolis + Niacinamide','Beauty of Joseon',209000,0,'dropper',4,'serum',[OILY,COMBO],['30 мл'],0,0,4.8,356],
+  ['Heartleaf 77% Soothing Toner','Anua',249000,289000,'toner',1,'toner',[OILY,COMBO,SENS],['250 мл','500 мл'],1,1,4.9,967],
+  ['Heartleaf Pore Control Cleansing Oil','Anua',269000,0,'pump',1,'cleanse',ALL,['200 мл'],0,0,4.8,402],
+  ['1025 Dokdo Toner','Round Lab',229000,0,'toner',3,'toner',[DRY,SENS],['200 мл','500 мл'],1,0,4.8,288],
+  ['Birch Juice Moisturizing Sun Cream','Round Lab',199000,0,'tube',3,'spf',[DRY,COMBO],['50 мл'],0,0,4.7,190],
+  ['Lip Sleeping Mask Berry','Laneige',239000,0,'jar',0,'lips',ALL,['20 г'],1,1,4.9,640],
+  ['Water Bank Blue Hyaluronic Cream','Laneige',389000,0,'jar',3,'cream',[DRY,COMBO],['50 мл'],0,0,4.7,154],
+  ['Centella Ampoule','Skin1004',189000,219000,'dropper',1,'serum',[SENS,COMBO],['55 мл','100 мл'],1,0,4.8,512],
+  ['Hyalu-Cica Water-Fit Sun Serum','Skin1004',199000,0,'tube',1,'spf',[OILY,COMBO,SENS],['50 мл'],1,0,4.8,377],
+  ['DIVE-IN Low Molecular Hyaluronic Acid Serum','Torriden',219000,0,'dropper',3,'serum',ALL,['50 мл'],1,1,4.9,733],
+  ['DIVE-IN Soothing Cream','Torriden',249000,0,'jar',3,'cream',[DRY,SENS],['100 мл'],0,0,4.7,201],
+  ['Hyaluronic Acid Watery Sun Gel','Isntree',179000,0,'tube',3,'spf',[OILY,COMBO],['50 мл'],0,0,4.7,168],
+  ['AHA BHA PHA 30 Days Miracle Toner','Some By Mi',189000,0,'toner',8,'toner',[OILY,COMBO],['150 мл'],1,0,4.6,299],
+  ['Age-R Booster Pro (аналог)','Medicube',359000,0,'jar',5,'cream',ALL,['50 мл'],0,0,4.6,87],
+  ['Zero Pore Pad 2.0','Medicube',269000,0,'jar',8,'toner',[OILY,COMBO],['70 шт'],0,0,4.7,145],
+  ['Supple Preparation Facial Toner','Klairs',239000,0,'toner',9,'toner',[DRY,SENS],['180 мл'],0,0,4.7,133],
+  ['Freshly Juiced Vitamin Drop','Klairs',229000,0,'dropper',4,'serum',[COMBO,SENS],['35 мл'],1,0,4.7,210],
+  ['Cicapair Tiger Grass Color Correcting Treatment','Dr.Jart+',419000,0,'jar',1,'cream',[SENS],['50 мл'],0,0,4.6,98],
+  ['First Care Activating Serum','Sulwhasoo',1290000,0,'pump',7,'serum',[DRY,COMBO],['60 мл','90 мл'],0,0,4.9,76],
+  ['Madecassoside Blemish Pad','Mediheal',149000,0,'jar',1,'mask',[OILY,SENS],['100 шт'],1,0,4.6,120],
+  ['N.M.F Aquaring Ampoule Mask × 10','Mediheal',139000,169000,'mask',3,'mask',ALL,['10 шт'],1,1,4.8,455],
+  ['No.3 Skin Softening Serum','Numbuzin',249000,0,'dropper',8,'serum',[DRY,COMBO],['50 мл'],0,0,4.8,170],
+  ['No.5 Vitamin Concentrated Sheet Mask × 4','Numbuzin',119000,0,'mask',4,'mask',ALL,['4 шт'],0,0,4.7,92],
+  ['Real Barrier Extreme Cream','Real Barrier',299000,0,'jar',9,'cream',[DRY,SENS],['50 мл'],1,0,4.8,188],
+  ['Juicy Lasting Tint','Rom&nd',129000,0,'tint',8,'lips',ALL,['#06 Figfig','#09 Litchi Coral','#25 Bare Grape'],1,1,4.8,860],
+  ['Dewyful Water Tint','Rom&nd',129000,0,'tint',0,'lips',ALL,['#01 In Coral','#05 Peach Me'],0,0,4.7,212],
+  ['Better Than Cheek Blusher','Rom&nd',139000,0,'cushion',0,'makeup',ALL,['#01 Strawberry','#03 Nucadamia'],0,0,4.7,140],
+  ['Kill Cover Fixer Cushion','Clio',299000,0,'cushion',9,'makeup',[OILY,COMBO],['02 Lingerie','03 Linen','04 Ginger'],1,1,4.7,330],
+  ['Kill Lash Superproof Mascara','Clio',169000,0,'stick',6,'makeup',ALL,['Black'],0,0,4.6,190],
+  ['Drawing Eye Brow','Etude',59000,0,'stick',2,'makeup',ALL,['#01 Dark Brown','#03 Brown','#05 Grey'],1,0,4.7,402],
+  ['Fixing Tint','Etude',119000,0,'tint',8,'lips',ALL,['#02 Vintage Red','#04 Chili Point'],0,0,4.5,77],
+  ['Black Rice Hyaluronic Toner','I\'m From',269000,0,'toner',7,'toner',[DRY],['150 мл'],0,0,4.6,58],
+  ['Rice Mask (смываемая)','I\'m From',249000,0,'jar',2,'mask',[DRY,COMBO],['110 г'],0,0,4.8,174],
+  ['Damage Treatment Rich Protein Hair Mask','Mise en Scène',139000,0,'tube',5,'hair',ALL,['180 мл'],1,0,4.6,95],
+  ['Perfect Serum Original','Mise en Scène',119000,0,'pump',2,'hair',ALL,['80 мл'],1,0,4.7,260],
+  ['Hand Cream Cherry Blossom','Innisfree',69000,0,'tube',0,'body',ALL,['30 мл'],1,0,4.6,140],
+  ['Green Tea Seed Hyaluronic Cream','Innisfree',259000,0,'jar',1,'cream',[DRY,COMBO],['50 мл'],0,0,4.6,112],
+].map((r,i)=>({id:i,name:r[0],brand:r[1],price:r[2],old:r[3],art:r[4],pal:PAL[r[5]],cat:r[6],skin:r[7],vols:r[8],stock:!!r[9],hot:!!r[10]}));
+
+// Verified brand data (data/catalogue.js, built by scripts/build_catalogue.py) overrides the demo rows.
+for(const {palette,...entry} of window.HARI_CATALOGUE||[]){
+  const p=P[entry.id]||(P[entry.id]={id:entry.id,art:'pump',pal:PAL[9],skin:ALL,stock:false,hot:false,price:0,old:0,vols:[]});
+  Object.assign(p,entry);
+  if(palette!=null)p.pal=PAL[palette];
+}
+// Every product gets explicit variants: [{label, price, old?, sku?, barcode?}]; the first is the default.
+// Demo rows have one price for all their sizes/shades — no invented size pricing.
+for(const p of P){
+  if(!p.variants)p.variants=p.vols.map((label,i)=>({label,price:p.price,...(i===0&&p.old?{old:p.old}:{})}));
+  p.vols=p.variants.map(v=>v.label);
+  p.price=p.variants[0].price; p.old=p.variants[0].old||0;
+  p.minPrice=Math.min(...p.variants.map(v=>v.price));
+}
+
+P.forEach(p=>{if(p.brand.toLowerCase()==='rom&nd')p.brand='Rom&nd'});
+const BRANDS=[...new Set(P.map(p=>p.brand))];
+const SKIN_NAMES={dry:'Сухая',oily:'Жирная',combo:'Комбинированная',sens:'Чувствительная'};
+const CAT_NAMES={cleanse:'Очищение',toner:'Тонеры и пэды',serum:'Сыворотки и эссенции',cream:'Кремы',spf:'Солнцезащита',mask:'Маски',lips:'Губы',makeup:'Макияж',hair:'Волосы',body:'Тело и руки',device:'Бьюти-девайсы'};
+Object.assign(CAT_NAMES,{tints:'Тинты для губ',cushions:'Кушоны',eyes:'Тушь и брови',blush:'Румяна',lipcare:'Бальзамы для губ',hairmasks:'Маски для волос',hairserums:'Сыворотки для волос',shampoo:'Шампуни',handcare:'Кремы для рук',bodycare:'Уход за телом'});
+const CATEGORY_IDS={tints:[27,28,33],cushions:[30],eyes:[31,32],blush:[29],lipcare:[8],hairmasks:[36],hairserums:[37],shampoo:[40],handcare:[38],bodycare:[41]};
+const GROUPS=[
+  // tiles: [category, label, product id whose photo is shown]
+  {title:'Уход за лицом',cats:[['cleanse','Очищение',1],['toner','Тонеры\nи пэды',4],['serum','Сыворотки',10],['cream','Кремы',20],['spf','SPF',2],['mask','Маски',23]],match:p=>['cleanse','toner','serum','cream','spf','mask','device'].includes(p.cat)},
+  {title:'Макияж',cats:[['tints','Тинты\nдля губ',28],['cushions','Кушоны',30],['eyes','Тушь\nи брови',32],['blush','Румяна',29],['lipcare','Бальзамы\nдля губ',8],['makeup','Всё для\nмакияжа',33]],match:p=>['lips','makeup'].includes(p.cat)},
+  {title:'Волосы и тело',cats:[['hairmasks','Маски\nдля волос',36],['hairserums','Сыворотки\nдля волос',37],['shampoo','Шампуни',40],['handcare','Кремы\nдля рук',38],['bodycare','Уход\nза телом',41]],match:p=>['hair','body'].includes(p.cat)},
+];
+const HOWTO={cleanse:'Нанесите на влажную кожу, помассируйте 30–60 сек и смойте тёплой водой. Утром и вечером.',toner:'После очищения нанесите на ватный диск или ладони и распределите похлопывающими движениями.',serum:'2–3 капли на очищенную кожу после тонера, до крема. Можно наслаивать.',cream:'Последний шаг ухода: распределите небольшое количество по лицу и шее.',spf:'Нанесите за 15 минут до выхода на улицу. Обновляйте каждые 2–3 часа — особенно в ташкентское лето.',mask:'Нанесите на 15–20 минут после тонера, затем вбейте остатки средства в кожу.',lips:'Наносите на губы как самостоятельное средство или поверх бальзама.',makeup:'Наносите после ухода и SPF.',hair:'Нанесите на влажные волосы по длине, избегая корней.',body:'Наносите по мере необходимости.'};
+
+/* ---------- state ---------- */
+const load=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}};
+const save=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
+let skin='all', cart=load('h_cart',[]), favs=new Set(load('h_favs',[])), brand=null;
+const FREE_SHIP=500000, SHIP=25000;
+
+const fmt=n=>Math.round(n).toLocaleString('ru-RU').replace(/,/g,' ')+' сум';
+const variant=(p,label)=>p.variants.find(v=>v.label===label)||p.variants[0];
+const priceOf=(p,label)=>variant(p,label).price;
+const visible=()=>P.filter(p=>skin==='all'||p.skin.includes(skin));
+const $=s=>document.querySelector(s);
+
+/* ---------- render ---------- */
+function card(p){
+  const v=p.variants[0], discounted=v.old>v.price;
+  return `<div class="pc" data-id="${p.id}">
+    <div class="img">${visual(p)}
+      <div class="tags">${p.hot?'<span class="hot">Хит</span>':''}${p.stock?'<span>В Ташкенте</span>':''}</div>
+      <button class="fav ${favs.has(p.id)?'on':''}" data-fav="${p.id}" aria-label="В избранное"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg></button>
+    </div>
+    <div class="brand">${p.brand}</div>
+    <button class="name" aria-label="Подробнее: ${esc(p.brand+' '+p.name)}">${esc(p.name)}</button>
+    <div class="price"><span>${fmt(v.price)}</span>${discounted?`<s>${fmt(v.old)}</s><span class="discount">−${Math.round((1-v.price/v.old)*100)}%</span>`:''}</div>
+    ${v.price>=100000?`<div class="split"><b>${fmt(v.price/2)} × 2</b>в сплит</div>`:''}
+    <div class="meta"><span>${esc(p.vols[0])}${p.vols.length>1?` +${p.vols.length-1}`:''}</span><span>${p.stock?'1–2 дня':'7–14 дней'}</span></div>
+  </div>`;
+}
+const shuffle=(a,seed)=>a.map((x,i)=>[x,Math.sin(i*9301+seed)]).sort((a,b)=>a[1]-b[1]).map(x=>x[0]);
+const empty='<p class="empty" style="grid-column:1/-1">Для этого типа кожи пока ничего нет</p>';
+
+function renderBrands(){
+  $('#brands').innerHTML=['Все',...BRANDS].map(b=>`<button class="chip ${(b==='Все'&&!brand)||b===brand?'on':''}" data-brand="${b}">${b}</button>`).join('');
+  const wrap=$('#brand-grid-wrap');
+  if(brand){const items=visible().filter(p=>p.brand===brand);wrap.hidden=false;$('#brand-grid').innerHTML=items.length?items.map(card).join(''):empty}
+  else wrap.hidden=true;
+}
+
+function renderSections(){
+  const v=visible();
+  let html='';
+  GROUPS.forEach((g,gi)=>{
+    const items=v.filter(g.match);
+    const best=[...items].sort((a,b)=>Number(b.hot)-Number(a.hot));
+    html+=`<section>
+      <div class="sh"><h3>${g.title}</h3><a href="#" data-group="${gi}">Все</a></div>
+      <div class="cats">${g.cats.map(([c,label,pid])=>`<a href="#" class="cat" data-cat="${c}"><span>${label.replace('\n','<br>')}</span><span class="ico">${photoOf(P[pid])?`<img src="${esc(photoOf(P[pid]))}" alt="" loading="lazy">`:pack(P[pid])}</span></a>`).join('')}</div>
+      <div class="sub">Бестселлеры <span data-group="${gi}">Все</span></div>
+      <div class="row">${best.map(card).join('')||empty}</div>
+      ${gi===0?`<div class="sub">В наличии в Ташкенте <span data-stock="1">Все</span></div><div class="row">${v.filter(p=>p.stock).map(card).join('')}</div>
+      <div class="sub">Скидки <span data-sale="1">Все</span></div><div class="row">${v.filter(p=>p.old).map(card).join('')||empty}</div>`:''}
+      <div class="sub">Только что купили <span data-group="${gi}">Все</span></div>
+      <div class="row">${shuffle(items,gi+1).map(card).join('')||empty}</div>
+    </section>`;
+    if(gi===0) html+=collections()+routines();
+    if(gi===1) html+=newIn();
+  });
+  html+=reviews();
+  $('#sections').innerHTML=html;
+}
+const COLLS=[
+  ['Выбор Hari','Знакомство с корейским уходом','collection-bestsellers',p=>p.hot],
+  ['Стеклянная кожа','Увлажнение слоями','collection-glass-skin',p=>['serum','toner','cream'].includes(p.cat)&&p.skin.includes(DRY)],
+  ['SPF на лето','UV-индекс в Ташкенте до 11','collection-spf',p=>p.cat==='spf'],
+  ['Против акне','Центелла, BHA, ниацинамид','collection-acne',p=>p.skin.includes(OILY)&&p.cat!=='makeup'&&p.cat!=='lips'],
+];
+const img=n=>`images/${n}.jpg`;
+function collections(){
+  return `<section><div class="sh"><h3>Актуальные подборки</h3></div><div class="cols">${COLLS.map(([t,d,pic],i)=>`
+    <div class="col ph photo-bg" data-coll="${i}" style="background-image:url(${img(pic)})"><div><h4>${t}</h4><p>${d}</p></div><span class="go">Смотреть</span></div>`).join('')}</div></section>`;
+}
+function newIn(){
+  return `<section><div class="newin"><div class="in"><div class="tag" style="font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--accent-strong)">НОВИНКИ НЕДЕЛИ</div>
+    <h3>Свежие поставки из Сеула каждую неделю</h3><p>Только что приехали — свежие партии с актуальным сроком годности на упаковке</p><button data-new="1">Смотреть новинки</button></div></div></section>`;
+}
+const ROUTINES=[
+  ['Для жирной кожи','routine-oily',[1,15,10,11]],
+  ['Для сухой кожи','routine-dry',[5,6,12,26]],
+  ['Для чувствительной','routine-sensitive',[1,4,10,13]],
+  ['Для мужчин: 3 шага','routine-men',[1,0,11]],
+  ['Против пигментации','texture-serum',[1,3,19,2]],
+  ['Anti-age','texture-cream',[5,21,24,26]],
+];
+const TEXTURE={cleanse:'texture-gel',toner:'texture-gel',serum:'texture-serum',cream:'texture-cream',spf:'texture-cream',mask:'texture-sheetmask',lips:'texture-tint',hair:'texture-cream',body:'texture-cream'};
+const textureFor=p=>p.cat==='makeup'?(p.art==='cushion'?'texture-cushion':null):TEXTURE[p.cat];
+const STEP=['Очищение','Тонер','Сыворотка','Крем / SPF'];
+function routines(){
+  return `<section><div class="sh"><h3>Рутины от косметолога</h3></div><div class="routines">
+    <div class="rt lead"><div><small style="opacity:.6">Корейский уход</small><h4>Собери свою рутину</h4></div><p style="font-size:13px;opacity:.75">Готовые наборы шагов — добавьте всё в корзину одной кнопкой</p><span class="go" onclick="toast('Скоро: персональный подбор рутины')">Подобрать</span></div>
+    ${ROUTINES.map(([t,pic,ids],ri)=>{const sum=ids.reduce((s,id)=>s+P[id].price,0);return `<div class="rt ph" data-routine="${ri}">
+      <div class="pimg" style="background-image:url(${img(pic)})"></div>
+      <div class="body"><div><b>${t}</b><br><small>${ids.length} шага · ${fmt(sum)}</small></div>
+      <ol>${ids.map((id,i)=>`<li><i>${i+1}</i>${P[id].brand} — ${P[id].name.split(' ').slice(0,3).join(' ')}</li>`).join('')}</ol>
+      <button class="btn dark" style="height:40px;font-size:13px" data-addroutine="${ri}">Всё в корзину</button></div></div>`}).join('')}
+  </div></section>`;
+}
+function reviews(){
+  const r=[['Наконец-то нашла оригинальный Anua в Ташкенте. Пришло за 9 дней, всё запечатано.','Дилноза, Ташкент','ugc-mirror-selfie'],['Заказывала по ссылке с Olive Young — привезли ровно то, что нужно, упаковано очень красиво.','Мадина, Самарканд','ugc-unboxing'],['Берём с подругой маски наборами, вечер с масками — наша традиция по пятницам.','Севара, Ташкент','ugc-friends-masks']];
+  return `<section><div class="sh"><h3>Наши покупательницы</h3><span style="font-size:14px;color:var(--ink2)">Демо-отзывы</span></div><div class="tests">${r.map(([t,a,pic])=>`<div class="test"><div class="ugc" style="background-image:url(${img(pic)})"><small>фото иллюстративное</small></div><div class="st">★★★★★</div><p style="margin-top:8px">${t}</p><b>${a}</b></div>`).join('')}</div></section>`;
+}
+function renderCounts(){
+  $('#cartCount').textContent=cart.reduce((s,i)=>s+i.qty,0)||'';
+  $('#favCount').textContent=favs.size||'';
+}
+function renderAll(){renderBrands();renderSections();renderCounts()}
+
+let resultsMode='catalogue';
+const resultsEmpty=()=>`<div class="empty" style="grid-column:1/-1"><p>${resultsMode==='favourites'?'В избранном пока пусто':'Ничего не найдено'}</p><p style="font-size:14px;margin:10px 0 18px">${resultsMode==='favourites'?'Нажмите на сердечко рядом с понравившимся товаром.':'Попробуйте другое название или бренд.'}</p><button class="chip" onclick="clearSearch()">В каталог</button></div>`;
+function showResults(title,items,mode='catalogue'){
+  resultsMode=mode;
+  document.body.classList.add('showing-results');
+  $('#home').hidden=true;$('#search-results').hidden=false;
+  $('#sr-title').textContent=title;
+  $('#sr-grid').innerHTML=items.length?items.map(card).join(''):resultsEmpty();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function clearSearch(){$('#q').value='';$('#home').hidden=false;$('#search-results').hidden=true;document.body.classList.remove('showing-results')}
+
+/* ---------- product modal ---------- */
+let sel=null, activeProduct=null, galleryItems=[], galleryIndex=0, returnFocus=null;
+const icon=(name,size=20)=>`<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${({close:'<path d="m6 6 12 12M18 6 6 18"/>',left:'<path d="m14 6-6 6 6 6"/>',right:'<path d="m10 6 6 6-6 6"/>',heart:'<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/>',truck:'<path d="M1 4h14v13H1zM15 8h4l3 4v5h-7"/><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/>'})[name]}</svg>`;
+function pricePanel(v){
+  const sale=v.old>v.price;
+  return `<div class="price-line"><strong class="pr">${fmt(v.price)}</strong>${sale?`<s class="old-price">${fmt(v.old)}</s><span class="discount">−${Math.round((1-v.price/v.old)*100)}%</span>`:''}</div>${sale?`<div class="price-saving">Экономия ${fmt(v.old-v.price)}</div>`:''}${v.price>=100000?`<div class="installment"><b>${fmt(v.price/2)} × 2</b> · оплата частями</div>`:''}`;
+}
+function productFacts(p,v){
+  return `<dl><dt>Бренд</dt><dd>${esc(p.brand)}</dd><dt>Вариант</dt><dd>${esc(v.label)}</dd>${v.sku?`<dt>Артикул</dt><dd>${esc(v.sku)}</dd>`:''}${v.barcode?`<dt>Штрихкод</dt><dd>${esc(v.barcode)}</dd>`:''}${p.expiry?`<dt>Годен до</dt><dd>${esc(p.expiry)}</dd>`:''}</dl>${p.source?.url?`<p style="margin-top:14px"><a href="${esc(p.source.url)}" target="_blank" rel="noopener noreferrer">Информация у бренда ↗</a></p>`:''}`;
+}
+function setProductPhoto(index){
+  if(!galleryItems.length)return;
+  galleryIndex=(index+galleryItems.length)%galleryItems.length;
+  const p=activeProduct, src=galleryItems[galleryIndex];
+  $('#productStage').innerHTML=`<div class="photo-fallback" hidden><b>Фото не загрузилось</b><span>Попробуйте выбрать другое изображение.</span></div><img src="${esc(src)}" alt="${esc(p.brand+' '+p.name+' · '+sel+' · фото '+(galleryIndex+1))}" decoding="async" onerror="this.hidden=true;this.previousElementSibling.hidden=false">`;
+  $('#galleryCount').textContent=`${galleryIndex+1} / ${galleryItems.length}`;
+  $('#pm').querySelectorAll('[data-photo]').forEach(b=>{const selected=Number(b.dataset.photo)===galleryIndex;b.classList.toggle('on',selected);b.setAttribute('aria-pressed',selected)});
+}
+function renderProductGallery(){
+  const p=activeProduct, main=photoOf(p,sel);
+  const otherVariants=new Set(p.variants.filter(v=>v.label!==sel).map(v=>v.image).filter(Boolean));
+  const extras=p.variantGalleryOnly?[]:brandImgs(p).filter(u=>!otherVariants.has(u));
+  galleryItems=[...new Set([main,...extras].filter(Boolean))].slice(0,8);
+  $('#productGallery').innerHTML=`<div class="gallery-stage" id="productStage">${galleryItems.length?'':pack(p)}</div><div class="gallery-footer"><span>${galleryItems.length?'Фотографии товара':'Изображение уточняется'}</span><div class="gallery-nav">${galleryItems.length>1?`<button data-photo-step="-1" aria-label="Предыдущее фото">${icon('left',16)}</button>`:''}<span class="gallery-count" id="galleryCount" aria-live="polite"></span>${galleryItems.length>1?`<button data-photo-step="1" aria-label="Следующее фото">${icon('right',16)}</button>`:''}</div></div>${galleryItems.length>1?`<div class="gal" role="group" aria-label="Фотографии товара">${galleryItems.map((u,i)=>`<button data-photo="${i}" aria-label="Фото ${i+1}" aria-pressed="${i===0}"><img src="${esc(u)}" alt="" loading="lazy" onerror="this.style.opacity='.2'"></button>`).join('')}</div>`:''}`;
+  setProductPhoto(0);
+}
+function setOverlay(id){
+  returnFocus=document.activeElement;
+  ['#pm','#cart'].forEach(s=>{const el=$(s);el.classList.toggle('on',s===id);el.inert=s!==id});
+  document.body.classList.add('overlay-open');
+  document.querySelectorAll('body>header,body>main,body>footer,body>.topline,body>.appbar').forEach(el=>el.inert=true);
+  $('#ov').classList.add('on');
+  $(id).scrollTop=0;
+  // Commit visibility before moving focus into the newly opened dialog.
+  $(id).getBoundingClientRect();
+  $(id).querySelector('button')?.focus({preventScroll:true});
+}
+function openProduct(id){
+  const p=P[id];if(!p)return;activeProduct=p;sel=p.vols[0];
+  const v=variant(p,sel);
+  const label=p.cat==='device'?'Цвет':/мл|г$|шт|банка/.test(sel)?'Объём / формат':p.id===8?'Аромат':'Оттенок';
+  const how=p.howTo?esc(p.howTo):'Точная инструкция указана на упаковке. Перед применением ознакомьтесь с рекомендациями производителя.';
+  const showSkin=['cleanse','toner','serum','cream','spf','mask'].includes(p.cat)&&p.skin.length;
+  $('#pm').innerHTML=`<div class="product-topbar"><div class="product-breadcrumb"><span>${esc(CAT_NAMES[p.cat])}</span><span aria-hidden="true">/</span><span>${esc(p.brand)}</span></div><button class="x" data-close aria-label="Закрыть карточку товара">${icon('close')}</button></div>
+    <div class="product-layout"><div class="product-gallery" id="productGallery"></div><div class="mc">
+      <div class="product-heading"><div class="br">${esc(p.brand)}</div><h2 id="productTitle">${esc(p.name)}</h2>${p.description?`<p class="desc">${esc(p.description)}</p>`:''}</div>
+      <div class="price-panel" id="productPrice" aria-live="polite">${pricePanel(v)}</div>
+      <div><div class="option-label">${label}: <span id="selectedVariant">${esc(sel)}</span></div><div class="vols" role="group" aria-label="${label}">${p.variants.map(x=>`<button data-vol="${esc(x.label)}" class="${sel===x.label?'on':''}" aria-pressed="${sel===x.label}">${esc(x.label)}<small>${fmt(x.price)}</small></button>`).join('')}</div></div>
+      <div class="purchase-actions"><button class="btn" id="addBtn">В корзину</button><button class="favourite-action ${favs.has(id)?'on':''}" id="favBig" aria-pressed="${favs.has(id)}" aria-label="${favs.has(id)?'Удалить из избранного':'Добавить в избранное'}">${icon('heart',22)}</button></div>
+      <div class="delivery-summary">${icon('truck',22)}<div><b>${p.stock?'В наличии в Ташкенте':'Под заказ из Кореи'}</b>${p.stock?'По Ташкенту 1–2 дня · по регионам 2–4 дня':'Ориентировочная доставка: 7–14 дней'}<br>Бесплатно по Ташкенту от ${fmt(FREE_SHIP)}</div></div>
+      <div class="product-details">
+        ${showSkin?`<details><summary>Для какого типа кожи</summary><div class="detail-content"><div class="skin">${p.skin.map(s=>`<span>${SKIN_NAMES[s]}</span>`).join('')}</div></div></details>`:''}
+        <details><summary>Как применять</summary><div class="detail-content">${how}</div></details>
+        ${p.keyIngredients?.length?`<details><summary>Ключевые компоненты</summary><div class="detail-content"><p>${p.keyIngredients.map(esc).join(' · ')}</p><p>Полный состав — на упаковке.</p></div></details>`:''}
+        <details><summary>Характеристики</summary><div class="detail-content" id="productFacts">${productFacts(p,v)}</div></details>
+      </div>
+    </div></div>`;
+  renderProductGallery();
+  $('#pm').onclick=e=>{
+    if(e.target.closest('[data-close]'))return closeAll();
+    const vb=e.target.closest('[data-vol]');
+    if(vb){sel=vb.dataset.vol;$('#pm').querySelectorAll('[data-vol]').forEach(b=>{const on=b===vb;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});const selected=variant(p,sel);$('#productPrice').innerHTML=pricePanel(selected);$('#selectedVariant').textContent=sel;$('#productFacts').innerHTML=productFacts(p,selected);renderProductGallery();return}
+    const photo=e.target.closest('[data-photo]');if(photo)return setProductPhoto(Number(photo.dataset.photo));
+    const step=e.target.closest('[data-photo-step]');if(step)return setProductPhoto(galleryIndex+Number(step.dataset.photoStep));
+    if(e.target.closest('#addBtn')){addToCart(p.id,sel);closeAll();toast('Добавлено в корзину');return}
+    if(e.target.closest('#favBig')){toggleFav(p.id);const b=$('#favBig'),on=favs.has(p.id);b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);b.setAttribute('aria-label',on?'Удалить из избранного':'Добавить в избранное')}
+  };
+  setOverlay('#pm');
+}
+
+/* ---------- cart ---------- */
+function addToCart(id,vol){const f=cart.find(i=>i.id===id&&i.vol===vol);f?f.qty++:cart.push({id,vol,qty:1});save('h_cart',cart);renderCounts()}
+function renderCart(){
+  if(!cart.length){$('#cartItems').innerHTML='<div class="empty">🧴<br><br>В корзине пока пусто</div>';$('#cartFoot').innerHTML='';return}
+  const sub=cart.reduce((s,it)=>s+priceOf(P[it.id],it.vol)*it.qty,0);
+  const left=FREE_SHIP-sub, ship=left>0?SHIP:0;
+  $('#cartItems').innerHTML=`<div class="ship">${left>0?`До бесплатной доставки осталось <b>${fmt(left)}</b>`:'🎉 Доставка по Ташкенту бесплатно'}<div class="bar"><i style="width:${Math.min(100,sub/FREE_SHIP*100)}%"></i></div></div>`+
+  cart.map((it,i)=>{const p=P[it.id];return `<div class="ci"><div class="th">${visual(p,false,it.vol)}</div>
+    <div><div class="n">${p.brand} · ${p.name}</div><div class="s">${it.vol} · ${p.stock?'1–2 дня':'7–14 дней'}</div><div class="qty"><button data-q="${i}" data-d="-1">−</button>${it.qty}<button data-q="${i}" data-d="1">+</button></div></div>
+    <div class="line-total" style="font-weight:800;font-size:14px;white-space:nowrap">${fmt(priceOf(p,it.vol)*it.qty)}</div></div>`}).join('');
+  const total=sub+ship;
+  $('#cartFoot').innerHTML=`<div style="display:flex;justify-content:space-between;font-size:14px;color:var(--ink2);margin-bottom:6px"><span>Доставка</span><span>${ship?fmt(ship):'бесплатно'}</span></div>
+    <div class="t"><span>Итого</span><span>${fmt(total)}</span></div><div class="sp">или ${fmt(total/2)} × 2 в сплит · Click, Payme, Uzum Nasiya</div><button class="btn" onclick="checkout()">Оформить заказ</button>`;
+}
+function checkout(){cart=[];save('h_cart',cart);renderCounts();closeAll();toast('Заказ оформлен (демо) — менеджер свяжется с вами')}
+function toggleFav(id){favs.has(id)?favs.delete(id):favs.add(id);save('h_favs',[...favs]);renderCounts();document.querySelectorAll(`[data-fav="${id}"]`).forEach(b=>b.classList.toggle('on',favs.has(id)));if(resultsMode==='favourites'&&!$('#search-results').hidden){const items=P.filter(p=>favs.has(p.id));$('#sr-grid').innerHTML=items.length?items.map(card).join(''):resultsEmpty()}}
+function closeAll(){['#ov','#cart','#pm'].forEach(s=>$(s).classList.remove('on'));$('#pm').inert=true;$('#cart').inert=true;document.body.classList.remove('overlay-open');document.querySelectorAll('body>header,body>main,body>footer,body>.topline,body>.appbar').forEach(el=>el.inert=false);if(returnFocus?.isConnected)returnFocus.focus({preventScroll:true});returnFocus=null}
+let tt;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),2400)}
+
+/* ---------- events ---------- */
+document.addEventListener('click',e=>{
+  const fav=e.target.closest('[data-fav]');if(fav){e.stopPropagation();return toggleFav(+fav.dataset.fav)}
+  const ar=e.target.closest('[data-addroutine]');if(ar){ROUTINES[ar.dataset.addroutine][2].forEach(id=>addToCart(id,P[id].vols[0]));return toast('Рутина добавлена в корзину')}
+  const rt=e.target.closest('[data-routine]');if(rt){const R=ROUTINES[rt.dataset.routine];return showResults('Рутина: '+R[0].toLowerCase(),R[2].map(i=>P[i]))}
+  const pc=e.target.closest('.pc');if(pc)return openProduct(+pc.dataset.id);
+  const b=e.target.closest('[data-brand]');if(b){brand=b.dataset.brand==='Все'?null:b.dataset.brand;return renderBrands()}
+  const c=e.target.closest('[data-cat]');if(c){e.preventDefault();return showResults(CAT_NAMES[c.dataset.cat],visible().filter(p=>CATEGORY_IDS[c.dataset.cat]?CATEGORY_IDS[c.dataset.cat].includes(p.id):p.cat===c.dataset.cat))}
+  const g=e.target.closest('[data-group]');if(g){e.preventDefault();const G=GROUPS[g.dataset.group];return showResults(G.title,visible().filter(G.match))}
+  if(e.target.closest('[data-stock]'))return showResults('В наличии в Ташкенте',visible().filter(p=>p.stock));
+  if(e.target.closest('[data-sale]'))return showResults('Скидки',visible().filter(p=>p.old));
+  if(e.target.closest('[data-new]'))return showResults('Новинки недели',visible().slice(-10).reverse());
+  const co=e.target.closest('[data-coll]');if(co){const C=COLLS[co.dataset.coll];return showResults(C[0],visible().filter(C[3]))}
+  const q=e.target.closest('[data-q]');if(q){const it=cart[q.dataset.q];it.qty+=+q.dataset.d;if(it.qty<1)cart.splice(q.dataset.q,1);save('h_cart',cart);renderCounts();return renderCart()}
+  const sk=e.target.closest('[data-skin]');if(sk){skin=sk.dataset.skin;document.querySelectorAll('[data-skin]').forEach(x=>x.classList.toggle('on',x===sk));clearSearch();return renderAll()}
+});
+$('#ov').onclick=closeAll;
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape')return closeAll();
+  const dialog=document.querySelector('.modal.on,.drawer.on');
+  if(e.key==='Tab'&&dialog){const buttons=[...dialog.querySelectorAll('button,a[href],summary,[tabindex="0"]')].filter(el=>!el.disabled&&el.getClientRects().length&&(!el.closest('details:not([open])')||el.matches('summary')));const first=buttons[0],last=buttons[buttons.length-1];if(!dialog.contains(document.activeElement)){e.preventDefault();first?.focus()}else if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus()}}
+  if(e.target.closest?.('.gal')&&['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();setProductPhoto(galleryIndex+(e.key==='ArrowRight'?1:-1));$('#pm').querySelector(`[data-photo="${galleryIndex}"]`)?.focus()}
+});
+$('#cartBtn').onclick=()=>{renderCart();setOverlay('#cart')};
+$('#favBtn').onclick=()=>showResults('Избранное',P.filter(p=>favs.has(p.id)),'favourites');
+const ALIASES={'ниацинамид':'niacinamide','центелла':'centella cica','улитка':'snail','спф':'spf sun','тинт':'tint','гиалурон':'hyalu','крем':'cream','сыворотка':'serum ampoule essence','тонер':'toner','маска':'mask','кушон':'cushion','пэды':'pad'};
+$('#q').addEventListener('input',e=>{
+  const v=e.target.value.trim().toLowerCase();if(!v)return clearSearch();
+  const terms=[v,...Object.entries(ALIASES).filter(([k])=>v.includes(k)||k.includes(v)&&v.length>2).flatMap(([,a])=>a.split(' '))];
+  showResults(`Поиск: «${e.target.value}»`,P.filter(p=>{const h=(p.name+' '+p.brand+' '+CAT_NAMES[p.cat]).toLowerCase();return terms.some(t=>h.includes(t))}));
+});
+$('.logo').onclick=e=>{e.preventDefault();clearSearch();window.scrollTo({top:0,behavior:'smooth'})};
+
+/* ---------- hero slider ---------- */
+(function(){
+  const root=$('#slider'), slides=[...root.querySelectorAll('.slide')], dots=root.querySelector('.sl-dots');
+  const DUR=6000, still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let cur=0;
+  root.style.setProperty('--dur',DUR+'ms');
+  dots.innerHTML=slides.map((_,i)=>`<button role="tab" aria-label="Слайд ${i+1}"><span><i></i></span></button>`).join('');
+  const db=[...dots.children];
+  function go(n){
+    n=(n+slides.length)%slides.length;
+    slides.forEach((s,i)=>{s.classList.toggle('on',i===n);s.setAttribute('aria-hidden',i!==n)});
+    db.forEach((d,i)=>{d.classList.remove('on');d.classList.toggle('done',i<n);d.setAttribute('aria-selected',i===n)});
+    void db[n].offsetWidth; db[n].classList.add('on'); // restart progress animation
+    cur=n;
+  }
+  // the active dot's progress bar drives autoplay, so pausing the animation pauses the slider
+  dots.addEventListener('animationend',()=>{ if(!still) go(cur+1) });
+  dots.addEventListener('click',e=>{const b=e.target.closest('button');if(b)go(db.indexOf(b))});
+  root.addEventListener('click',e=>{const a=e.target.closest('[data-sl]');if(a)go(cur+ +a.dataset.sl)});
+  const pause=on=>root.classList.toggle('paused',on);
+  root.addEventListener('mouseenter',()=>pause(true));
+  root.addEventListener('mouseleave',()=>pause(false));
+  root.addEventListener('focusin',()=>pause(true));
+  root.addEventListener('focusout',()=>pause(false));
+  document.addEventListener('visibilitychange',()=>pause(document.hidden));
+  let x0=null;
+  root.addEventListener('touchstart',e=>{x0=e.touches[0].clientX;pause(true)},{passive:true});
+  root.addEventListener('touchend',e=>{if(x0!==null){const dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40)go(cur+(dx<0?1:-1))}x0=null;pause(false)});
+  go(0);
+})();
+
+renderAll();
+</script>
+</body>
+</html>

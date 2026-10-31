@@ -1,0 +1,6 @@
+.DS_Store
+.claude/
+# Raw copies of brand store pages/catalogues: local research only, not for republishing
+data/research-*/
+# Full-size originals of the images in images/ (kept locally)
+images/originals/
